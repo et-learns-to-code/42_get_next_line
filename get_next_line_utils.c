@@ -6,7 +6,7 @@
 /*   By: etien <etien@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:38:44 by etien             #+#    #+#             */
-/*   Updated: 2024/06/28 14:47:42 by etien            ###   ########.fr       */
+/*   Updated: 2024/06/28 16:10:42 by etien            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,16 +139,25 @@ char	*extract_line(char **stash)
 	size_t	len;
 	char	*complete_line;
 	char	*leftovers;
+	char	*last_line;
 
 	len = 0;
+	if (ft_strlen(*stash) == 0)
+		return (NULL);
 	while ((*stash)[len] != '\n' && (*stash)[len])
 		len++;
 	if ((*stash)[len] == '\n')
 	{
 		complete_line = ft_substr(*stash, 0, len + 1);
-		leftovers = ft_substr(*stash, len, ((ft_strlen(*stash) - len) + 1);
+		leftovers = ft_substr(*stash, len, (ft_strlen(*stash) - len) + 1);
 		free(*stash);
 		*stash = leftovers;
+		return (complete_line);
+	}
+	if ((*stash)[len] == '\0')
+	{
+		complete_line = *stash;
+		*stash = NULL;
 		return (complete_line);
 	}
 	return (NULL);
