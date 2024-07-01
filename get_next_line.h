@@ -6,7 +6,7 @@
 /*   By: etien <etien@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:38:59 by etien             #+#    #+#             */
-/*   Updated: 2024/07/01 17:11:48 by etien            ###   ########.fr       */
+/*   Updated: 2024/07/01 17:21:51 by etien            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@
 # endif
 
 char	*get_next_line(int fd);
+int		complete_line_found(char *stash);
+char	*read_to_buffer(int fd);
+char	*extract_line(char **stash);
 size_t	ft_strlen(const char *s);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
-char	*read_to_buffer(int fd);
-int		complete_line_found(char *stash);
-char	*extract_line(char **stash);
 
 #endif
