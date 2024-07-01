@@ -6,7 +6,7 @@
 /*   By: etien <etien@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:38:21 by etien             #+#    #+#             */
-/*   Updated: 2024/06/28 16:21:27 by etien            ###   ########.fr       */
+/*   Updated: 2024/07/01 13:36:56 by etien            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char *get_next_line(int fd)
 	char		*buffer;
 	char		*complete_line;
 	char		*tmp_stash;
+
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 	{
 		free(stash);
@@ -30,7 +31,7 @@ char *get_next_line(int fd)
 	}
 	if (!stash)
 		stash = ft_strdup("");
-	while (!extract_line(&stash))
+	while (!(complete_line_found(stash)))
 	{
 		buffer = read_to_buffer(fd);
 		if (!buffer)
@@ -39,11 +40,8 @@ char *get_next_line(int fd)
 		free(stash);
 		stash = ft_strjoin(tmp_stash, buffer);
 		free(tmp_stash);
+		free(buffer);
 	}
 	complete_line = extract_line(&stash);
 	return (complete_line);
-
 }
-
-
-

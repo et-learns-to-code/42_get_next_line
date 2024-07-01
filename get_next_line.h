@@ -6,7 +6,7 @@
 /*   By: etien <etien@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:38:59 by etien             #+#    #+#             */
-/*   Updated: 2024/06/28 14:48:15 by etien            ###   ########.fr       */
+/*   Updated: 2024/07/01 13:39:08 by etien            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdlib.h>
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
+# define BUFFER_SIZE 10
 #endif
 
 char	*get_next_line(int fd);
@@ -27,6 +27,7 @@ char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*read_to_buffer(int fd);
+int		complete_line_found(char *stash);
 char	*extract_line(char **stash);
 
 #endif

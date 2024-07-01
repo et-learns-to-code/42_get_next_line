@@ -6,7 +6,7 @@
 /*   By: etien <etien@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:38:44 by etien             #+#    #+#             */
-/*   Updated: 2024/06/28 16:10:42 by etien            ###   ########.fr       */
+/*   Updated: 2024/07/01 13:16:11 by etien            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,18 @@ char	*read_to_buffer(int fd)
 	return buffer;
 }
 
+// Runs through existing stash checking for newline character.
+// Returns 1 if a newline character is found to terminate the while loop.
+// Otherwise new buffers will continue to be appended to stash.
+int complete_line_found(char *stash)
+{
+	while (*stash != '\n' && *stash)
+		stash++;
+	if (*stash == '\n')
+		return (1);
+	return (0);
+}
+
 // **stash is used instead of *stash because we want to move the stash pointer to the
 // leftovers string memory after freeing the original stash.
 // This function checks within the stash for a complete line based on the presence
@@ -139,7 +151,6 @@ char	*extract_line(char **stash)
 	size_t	len;
 	char	*complete_line;
 	char	*leftovers;
-	char	*last_line;
 
 	len = 0;
 	if (ft_strlen(*stash) == 0)
@@ -149,12 +160,12 @@ char	*extract_line(char **stash)
 	if ((*stash)[len] == '\n')
 	{
 		complete_line = ft_substr(*stash, 0, len + 1);
-		leftovers = ft_substr(*stash, len, (ft_strlen(*stash) - len) + 1);
+		leftovers = ft_substr(*stash, len + 1, ft_strlen(*stash) - len - 1);
 		free(*stash);
 		*stash = leftovers;
 		return (complete_line);
 	}
-	if ((*stash)[len] == '\0')
+	else if ((*stash)[len] == '\0')
 	{
 		complete_line = *stash;
 		*stash = NULL;
