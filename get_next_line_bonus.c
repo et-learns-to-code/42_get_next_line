@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: etien <etien@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/27 13:38:21 by etien             #+#    #+#             */
-/*   Updated: 2024/07/02 17:11:13 by etien            ###   ########.fr       */
+/*   Created: 2024/06/27 13:41:10 by etien             #+#    #+#             */
+/*   Updated: 2024/07/02 17:55:07 by etien            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 // (read(fd, NULL, 0) < 0) ensures that the file is in a readable format
 // stash is freed at the start because the data persists across function calls
@@ -21,23 +21,23 @@
 // If extract_line returns null, stash is deallocated and null is returned.
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*stash[MAX_FD];
 	char		*complete_line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
+	if (fd >= MAX_FD || fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 	{
-		free(stash);
-		stash = NULL;
+		free(stash[fd]);
+		stash[fd] = NULL;
 		return (NULL);
 	}
-	if (!stash)
-		stash = ft_strdup("");
-	append_buffer_loop(&stash, fd);
-	complete_line = extract_line(&stash);
+	if (!stash[fd])
+		stash[fd] = ft_strdup("");
+	append_buffer_loop(&stash[fd], fd);
+	complete_line = extract_line(&stash[fd]);
 	if (!complete_line)
 	{
-		free(stash);
-		stash = NULL;
+		free(stash[fd]);
+		stash[fd] = NULL;
 	}
 	return (complete_line);
 }
