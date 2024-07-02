@@ -6,7 +6,7 @@
 /*   By: etien <etien@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:38:21 by etien             #+#    #+#             */
-/*   Updated: 2024/07/01 18:40:02 by etien            ###   ########.fr       */
+/*   Updated: 2024/07/02 13:35:10 by etien            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,17 @@ char	*get_next_line(int fd)
 		buffer = read_to_buffer(fd);
 		if (!buffer)
 			break ;
-		tmp_stash = ft_strdup(stash);
+		tmp_stash = ft_strjoin(stash, buffer);
 		free(stash);
-		stash = ft_strjoin(tmp_stash, buffer);
-		free(tmp_stash);
 		free(buffer);
+		stash = tmp_stash;
 	}
 	complete_line = extract_line(&stash);
+	if (!complete_line)
+	{
+		free(stash);
+		stash = NULL;
+	}
 	return (complete_line);
 }
 
