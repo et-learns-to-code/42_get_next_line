@@ -6,7 +6,7 @@
 /*   By: etien <etien@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:38:59 by etien             #+#    #+#             */
-/*   Updated: 2024/07/01 17:21:51 by etien            ###   ########.fr       */
+/*   Updated: 2024/07/02 14:08:46 by etien            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # endif
 
 char	*get_next_line(int fd);
+void	append_buffer_loop(char **stash, int fd);
 int		complete_line_found(char *stash);
 char	*read_to_buffer(int fd);
 char	*extract_line(char **stash);

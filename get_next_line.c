@@ -6,21 +6,22 @@
 /*   By: etien <etien@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:38:21 by etien             #+#    #+#             */
-/*   Updated: 2024/07/02 13:35:10 by etien            ###   ########.fr       */
+/*   Updated: 2024/07/02 14:28:43 by etien            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-// an error returned from read might suggest that the file is not readable
-// (see read(fd, NULL, 0) < 0)
-// stash is freed at the start because that is the only data that persists
-// across function calls
+// (read(fd, NULL, 0) < 0) ensures that the file is in a readable format
+// stash is freed at the start because the data persists across function calls
+// The function does some initial checks then initializes stash.
+// It calls append_buffer_loop to keep reading from the buffer and
+// storing the data in stash.
+// If a complete line is found, the line is extracted and returned.
+// If extract_line returns null, stash is deallocated and null is returned.
 char	*get_next_line(int fd)
 {
 	static char	*stash;
-	char		*buffer;
-	char		*tmp_stash;
 	char		*complete_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
@@ -31,16 +32,7 @@ char	*get_next_line(int fd)
 	}
 	if (!stash)
 		stash = ft_strdup("");
-	while (!(complete_line_found(stash)))
-	{
-		buffer = read_to_buffer(fd);
-		if (!buffer)
-			break ;
-		tmp_stash = ft_strjoin(stash, buffer);
-		free(stash);
-		free(buffer);
-		stash = tmp_stash;
-	}
+	append_buffer_loop(&stash, fd);
 	complete_line = extract_line(&stash);
 	if (!complete_line)
 	{
@@ -50,9 +42,27 @@ char	*get_next_line(int fd)
 	return (complete_line);
 }
 
+// The loop will keep reading from the buffer and appending the buffer
+// to the stash so long as no complete line is found.
+void	append_buffer_loop(char **stash, int fd)
+{
+	char		*buffer;
+	char		*tmp_stash;
+
+	while (!(complete_line_found(*stash)))
+	{
+		buffer = read_to_buffer(fd);
+		if (!buffer)
+			return ;
+		tmp_stash = ft_strjoin(*stash, buffer);
+		free(*stash);
+		free(buffer);
+		*stash = tmp_stash;
+	}
+}
+
 // Runs through existing stash checking for newline character.
 // Returns 1 if a newline character is found to terminate the while loop.
-// Otherwise new buffers will continue to be appended to stash.
 int	complete_line_found(char *stash)
 {
 	while (*stash != '\n' && *stash)
