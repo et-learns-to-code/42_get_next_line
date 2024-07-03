@@ -6,7 +6,7 @@
 /*   By: etien <etien@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:41:10 by etien             #+#    #+#             */
-/*   Updated: 2024/07/03 09:57:42 by etien            ###   ########.fr       */
+/*   Updated: 2024/07/03 10:29:29 by etien            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,11 @@ char	*get_next_line(int fd)
 
 	if (fd >= MAX_FD || fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 	{
-		free(stash[fd]);
-		stash[fd] = NULL;
+		if (fd < MAX_FD && fd >= 0)
+		{
+			free(stash[fd]);
+			stash[fd] = NULL;
+		}
 		return (NULL);
 	}
 	if (!stash[fd])
