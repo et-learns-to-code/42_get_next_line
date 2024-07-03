@@ -6,7 +6,7 @@
 /*   By: etien <etien@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 13:41:10 by etien             #+#    #+#             */
-/*   Updated: 2024/07/02 17:55:07 by etien            ###   ########.fr       */
+/*   Updated: 2024/07/03 09:57:42 by etien            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 // storing the data in stash.
 // If a complete line is found, the line is extracted and returned.
 // If extract_line returns null, stash is deallocated and null is returned.
+// Bonus part implementation creates an fd stash array
+// When fd is input into the function, the function will only operate on the
+// associated fd stash
 char	*get_next_line(int fd)
 {
 	static char	*stash[MAX_FD];
